@@ -1,0 +1,309 @@
+/* assets/css/main.css */
+
+/* ── Fonts ───────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
+
+/* ── Reset & base ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:          #090911;
+  --bg-card:     #111119;
+  --bg-input:    #0d0d16;
+  --border:      rgba(255,255,255,0.08);
+  --border-focus: rgba(108,99,255,0.6);
+  --primary:     #6c63ff;
+  --primary-2:   #3ecfcf;
+  --text:        #e8e8f0;
+  --text-muted:  #7070a0;
+  --danger:      #ff5c6c;
+  --success:     #3ecfcf;
+  --radius:      14px;
+  --radius-lg:   20px;
+  --shadow:      0 24px 80px rgba(0,0,0,0.6);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Noise texture overlay ────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Glow blobs ───────────────────────────────────────────── */
+.blob {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 0;
+  animation: blobFloat 8s ease-in-out infinite alternate;
+}
+.blob-1 { width: 500px; height: 500px; background: rgba(108,99,255,0.18); top: -150px; right: -100px; animation-delay: 0s; }
+.blob-2 { width: 400px; height: 400px; background: rgba(62,207,207,0.12); bottom: -100px; left: -80px; animation-delay: -4s; }
+
+@keyframes blobFloat {
+  from { transform: translate(0,0) scale(1); }
+  to   { transform: translate(30px, 20px) scale(1.08); }
+}
+
+/* ── Layout helpers ───────────────────────────────────────── */
+.page-center {
+  position: relative; z-index: 1;
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 40px 20px;
+}
+
+/* ── Card ─────────────────────────────────────────────────── */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 48px 44px;
+  width: 100%; max-width: 460px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(20px);
+  animation: cardIn 0.5s cubic-bezier(0.22,1,0.36,1) both;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(24px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── Logo / Brand ─────────────────────────────────────────── */
+.brand {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 36px;
+}
+.brand-icon {
+  width: 44px; height: 44px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+}
+.brand-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px; font-weight: 700;
+  background: linear-gradient(90deg, #fff, #a0a0d0);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+/* ── Typography ───────────────────────────────────────────── */
+h1, h2, h3 { font-family: 'Syne', sans-serif; line-height: 1.2; }
+
+.card-title {
+  font-size: 26px; font-weight: 700; color: #fff;
+  margin-bottom: 8px;
+}
+.card-subtitle {
+  font-size: 14px; color: var(--text-muted);
+  margin-bottom: 36px;
+}
+
+/* ── Form elements ────────────────────────────────────────── */
+.form-group { margin-bottom: 20px; }
+.form-group label {
+  display: block;
+  font-size: 13px; font-weight: 500; color: #a0a0c0;
+  margin-bottom: 8px; letter-spacing: 0.02em;
+}
+
+.input-wrap { position: relative; }
+.input-wrap .input-icon {
+  position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+  color: var(--text-muted); font-size: 16px; pointer-events: none;
+}
+.input-wrap input[type="text"],
+.input-wrap input[type="email"],
+.input-wrap input[type="password"] {
+  padding-left: 44px !important;
+}
+.toggle-pw {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer;
+  color: var(--text-muted); font-size: 16px; padding: 4px;
+  transition: color 0.2s;
+}
+.toggle-pw:hover { color: var(--text); }
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"] {
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+}
+input:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(108,99,255,0.15);
+}
+input::placeholder { color: #3a3a5a; }
+
+/* ── Checkbox ─────────────────────────────────────────────── */
+.checkbox-row {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 14px; color: var(--text-muted); cursor: pointer;
+}
+.checkbox-row input[type="checkbox"] {
+  width: 18px; height: 18px; border-radius: 5px; flex-shrink: 0;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+/* ── Buttons ──────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 15px 24px;
+  border: none; border-radius: var(--radius);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px; font-weight: 600;
+  cursor: pointer; text-decoration: none;
+  transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+  letter-spacing: 0.01em;
+}
+.btn:active { transform: scale(0.98); }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, #4f46e5 50%, var(--primary-2) 100%);
+  background-size: 200% 200%;
+  color: #fff;
+  box-shadow: 0 8px 32px rgba(108,99,255,0.35);
+  animation: gradShift 4s ease infinite;
+}
+@keyframes gradShift {
+  0%,100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+.btn-primary:hover { box-shadow: 0 12px 40px rgba(108,99,255,0.5); transform: translateY(-1px); }
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+.btn-ghost:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
+
+.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+
+/* ── Divider ──────────────────────────────────────────────── */
+.divider {
+  display: flex; align-items: center; gap: 16px;
+  margin: 28px 0;
+  color: var(--text-muted); font-size: 13px;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1;
+  height: 1px; background: var(--border);
+}
+
+/* ── Alerts ───────────────────────────────────────────────── */
+.alert {
+  padding: 14px 18px;
+  border-radius: var(--radius);
+  font-size: 14px; line-height: 1.5;
+  margin-bottom: 24px;
+  display: flex; align-items: flex-start; gap: 10px;
+  animation: alertIn 0.3s ease both;
+}
+@keyframes alertIn { from { opacity: 0; transform: translateY(-6px); } to { opacity:1; transform: none; } }
+
+.alert-error   { background: rgba(255,92,108,0.1); border: 1px solid rgba(255,92,108,0.25); color: #ff8090; }
+.alert-success { background: rgba(62,207,207,0.1); border: 1px solid rgba(62,207,207,0.25); color: #5de0e0; }
+.alert-info    { background: rgba(108,99,255,0.1); border: 1px solid rgba(108,99,255,0.25); color: #9b94ff; }
+
+/* ── OTP boxes ────────────────────────────────────────────── */
+.otp-grid {
+  display: flex; gap: 10px; justify-content: center;
+  margin-bottom: 28px;
+}
+.otp-grid input {
+  width: 52px; height: 64px;
+  text-align: center; font-size: 26px; font-weight: 700;
+  border-radius: var(--radius);
+  padding: 0 !important;
+  caret-color: var(--primary);
+  font-family: 'Syne', sans-serif;
+}
+
+/* ── Password strength bar ────────────────────────────────── */
+.strength-bar-wrap { margin-top: 8px; display: flex; gap: 5px; }
+.strength-seg {
+  flex: 1; height: 3px; border-radius: 2px;
+  background: var(--border);
+  transition: background 0.3s;
+}
+.strength-label { font-size: 12px; color: var(--text-muted); margin-top: 5px; }
+
+/* ── Links ────────────────────────────────────────────────── */
+.link {
+  color: var(--primary);
+  text-decoration: none; font-weight: 500;
+  transition: color 0.2s;
+}
+.link:hover { color: var(--primary-2); }
+
+.form-footer {
+  text-align: center; margin-top: 28px;
+  font-size: 14px; color: var(--text-muted);
+}
+
+/* ── Progress steps ───────────────────────────────────────── */
+.steps {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0; margin-bottom: 40px;
+}
+.step {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  position: relative;
+}
+.step-dot {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--bg-input); border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 600; color: var(--text-muted);
+  transition: all 0.3s;
+  z-index: 1;
+}
+.step.active .step-dot  { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: 0 0 0 4px rgba(108,99,255,0.2); }
+.step.done .step-dot    { background: var(--success); border-color: var(--success); color: #fff; }
+.step-label { font-size: 11px; color: var(--text-muted); white-space: nowrap; }
+.step.active .step-label { color: var(--primary); }
+
+.step-line {
+  flex: 1; height: 2px; min-width: 40px;
+  background: var(--border);
+  transition: background 0.3s;
+}
+.step-line.done { background: var(--success); }
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .card { padding: 36px 24px; }
+  .otp-grid input { width: 42px; height: 54px; font-size: 22px; }
+}
